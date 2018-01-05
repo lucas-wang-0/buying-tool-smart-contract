@@ -14,16 +14,17 @@
 
 **work flow**
 
+```
 user               contract                                  server     ShapeShift
     <send ether>
-------- && ---------> |
+ |----- && ---------> |
    <invoke *buy*>
                 <process *buy*>
                 <invoke *getRatesFromOurServer*> ------------> |
                 rates data <---------------------------------- |
                 <invoke *sendEthersToShapeShift*> -----------------------> |
-receive tokens <-----------------------------------------------------------|
-
+receive tokens | <---------------------------------------------------------|
+```
 
 **main logic**
 
