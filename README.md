@@ -1,6 +1,5 @@
-<<<<<<< HEAD
 # Index Smart Contract
-=======
+
 # Get Start
 
 ## install truffle and ganache local testnet
@@ -28,9 +27,6 @@ truffle compile
 ```
 truffle deploy
 ```
-
-# index smart contract
->>>>>>> master
 
 ## Stage 1 - one-source index
 
