@@ -27,7 +27,8 @@ contract BuyToolsAgent is Ownable, Oracle {
     public
     onlyOracle
     {
-      
+
+        require(limit > min);
         uint256 fund = funds[customer];
         require(fund > 0);
 
