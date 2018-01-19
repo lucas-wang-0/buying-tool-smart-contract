@@ -1,6 +1,7 @@
 var HDWalletProvider = require("truffle-hdwallet-provider");
-var prompt = require('password-prompt')
+var prompt = require('prompt-sync')();
 
+var mnemonics = {};
 module.exports = {
   // See <http://truffleframework.com/docs/advanced/configuration>
   // to customize your Truffle configuration!
@@ -12,8 +13,8 @@ module.exports = {
       },
       rinkeby: {
           provider: function() {
-              let mnemonic = prompt('mnemonic: ')
-              return new HDWalletProvider(mnemonic, "https://rinkeby.infura.io/qajYHKaGssZt5WrdfzGP");
+              mnemonics.rinkeby = mnemonics.rinkeby || prompt.hide('network rinkeby mnemonic: ');
+              return new HDWalletProvider(mnemonics.rinkeby, "https://rinkeby.infura.io/qajYHKaGssZt5WrdfzGP");
           },
           network_id: 3
       }

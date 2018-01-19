@@ -22,11 +22,33 @@ npm install
 truffle compile
 ```
 
-## deploy to testnet
+## deploy to local testnet
 
 ```
 truffle deploy
 ```
+
+## deploy to rinkeby testnet
+
+first run cmd:
+```
+truffle --network=rinkeby deploy
+```
+then input mnemonics to continue deploy
+
+## listen OnBuy event 
+
+first run cmd:
+```bash
+truffle exec scripts/listen_on_buy.js
+```
+
+then run follow cmd to buy, the above OnBuy event will be fire:
+```bash
+truffle exec scripts/main.js
+```
+
+# index smart contract
 
 ## Stage 1 - one-source index
 
