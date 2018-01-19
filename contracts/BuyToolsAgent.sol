@@ -7,57 +7,54 @@ contract BuyToolsAgent is Ownable, Oracle {
 
     mapping(address => uint) funds;
 
-    event OnBuy(address indexed customer, bytes sybmol, uint256 ethMount);
+    event OnBuy(address indexed customer, bytes symbol, uint256 ethMount);
 
-    function BuyToolsAgent() public {
-    }
+    function BuyToolsAgent() public { }
 
     // customer send eth
-    function buy(bytes sybmol) 
+    function buy(bytes symbol) 
     public
     payable
     {
-        // TODO: Lock
-        funds[msg.sender] = msg.value;
-        OnBuy(msg.sender, sybmol, msg.value);
+        // TODO: check valid symbol
+        funds[msg.sender] += msg.value;
+        OnBuy(msg.sender, symbol, msg.value);
+    }
+
+    function refund()
+    public
+    {
+        var fund = funds[msg.sender];
+        if (fund > 0) {
+            funds[msg.sender] = 0;
+            msg.sender.transfer(fund);
+        }
     }
 
     // oracle callback
-    function onShapeShiftOracleResponse(address customer, address deposit, uint256 limit, uint256 min)
+    function onShapeShiftOracleResponse(address customer, address[] deposits, uint256[] amounts)
     public
     onlyOracle
     {
+        require(deposits.length > 0 && deposits.length < 255);
+        require(deposits.length == amounts.length);
 
-        require(limit > min);
-        uint256 fund = funds[customer];
-        require(fund > 0);
+        for (uint8 i = 0; i < deposits.length; i++) {
 
-        // if fund less then min, refund
-        if (fund < min) {
+            if (amounts[i] == 0) {
+                continue;
+            }
+
+            if (funds[customer] >= amounts[i]) {
+                funds[customer] -= amounts[i];
+                deposits[i].transfer(amounts[i]);
+            }
+        }
+
+        var left = funds[customer];
+        if (left > 0) {
             funds[customer] = 0;
-            customer.transfer(fund);
-            return;
+            customer.transfer(left);
         }
-
-        uint256 refund = 0;
-        uint256 orderPayFund = min;
-
-        if (fund < limit) {
-            orderPayFund = fund;
-        } else {
-            orderPayFund = limit;
-            refund = fund - limit;
-        }
-
-        // if fund great then limit, first we send limit to deposit address, then refund
-        // TODO: use SafeMath
-        funds[customer] = funds[customer] - orderPayFund;
-        deposit.transfer(orderPayFund);
-
-        if ( refund > 0) {
-            funds[customer] = 0;
-            customer.transfer(refund);
-        }
-        return;
     }
 }
