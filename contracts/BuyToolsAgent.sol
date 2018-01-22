@@ -36,7 +36,7 @@ contract BuyToolsAgent is Ownable, Oracle {
     public
     onlyOracle
     {
-        require(deposits.length > 0 && deposits.length < 255);
+        require(deposits.length > 0 && deposits.length < 10);
         require(deposits.length == amounts.length);
 
         for (uint8 i = 0; i < deposits.length; i++) {

@@ -13,7 +13,7 @@ module.exports = {
       },
       rinkeby: {
           provider: function() {
-              mnemonics.rinkeby = mnemonics.rinkeby || prompt.hide('network rinkeby mnemonic: ');
+              mnemonics.rinkeby = mnemonics.rinkeby || prompt('network rinkeby mnemonic: ');
               return new HDWalletProvider(mnemonics.rinkeby, "https://rinkeby.infura.io/qajYHKaGssZt5WrdfzGP");
           },
           network_id: 3
