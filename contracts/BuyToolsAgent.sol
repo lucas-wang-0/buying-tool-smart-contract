@@ -21,13 +21,14 @@ contract BuyToolsAgent is Ownable, Oracle {
         OnBuy(msg.sender, symbol, msg.value);
     }
 
-    function refund()
+    function refund(address sender)
     public
+    onlyOracle
     {
-        var fund = funds[msg.sender];
+        var fund = funds[sender];
         if (fund > 0) {
-            funds[msg.sender] = 0;
-            msg.sender.transfer(fund);
+            funds[sender] = 0;
+            sender.transfer(fund);
         }
     }
 
