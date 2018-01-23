@@ -9,6 +9,7 @@ module.exports = function (callback) {
             return instance.buy("em", { value: web3.toWei(0.11) });
         })
         .then(function (result) {
+
             for (var i = 0; i < result.logs.length; i++) {
                 var log = result.logs[i];
                 if (log.event == "OnBuy") {

@@ -21,6 +21,14 @@ contract BuyToolsAgent is Ownable, Oracle {
         OnBuy(msg.sender, symbol, msg.value);
     }
 
+    function balanceOf(address sender)
+    public
+    view
+    returns(uint256)
+    {
+        return funds[sender];
+    }
+
     function refund(address sender)
     public
     onlyOracle
