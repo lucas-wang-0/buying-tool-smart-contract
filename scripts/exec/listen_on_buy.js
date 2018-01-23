@@ -40,7 +40,7 @@ module.exports = function (callback) {
                             let transactionHash = log.transactionHash;
                             let logIndex = log.logIndex;
 
-                            console.info("new event => ","from:", log.args.customer, "symbol:", web3.toAscii(log.args.symbol), "value:", web3.fromWei(amount.toNumber()));
+                            console.info("new event => ", "transactionHash:", transactionHash, "blockNumber:", blockNumber, "logIndex:", 1, "from:", log.args.customer, "symbol:", web3.toAscii(log.args.symbol), "value:", web3.fromWei(amount.toNumber()));
 
                             DBHelper.saveWatchFromBlock(db, onBuyEventName, blockNumber)
                                 .then(() => {
@@ -55,8 +55,8 @@ module.exports = function (callback) {
                                     let symbol = web3.toAscii(log.args.symbol);
                                     let pairs = Index.pairs[symbol];
                                     if (!pairs) {
+                                        console.warn("not found symbol:", symbol, "customer:", log.args.customer,"amount:",web3.fromWei(amount.toNumber()));
                                         //TODO: refund
-                                        console.warn("not found symbol:", symbol);
                                         return
                                     }
 
@@ -80,13 +80,16 @@ module.exports = function (callback) {
                                                 return avg_amount;
                                             });
 
-                                            console.log("deposits = ", deposits.join(', '));
-                                            console.log("amounts = ", amounts.map(a => { return web3.fromWei(a.toNumber()); }).join(', '));
+                                            let logs = [];
+                                            logs.push('customer:', log.args.customer);
+                                            logs.push('deposits:[', deposits.join(', '),']');
+                                            logs.push('amounts:[', amounts.map(a => { return web3.fromWei(a.toNumber()); }).join(', '),']');
+                                            console.info("start onShapeShiftOracleResponse => ", logs.join(' '));
 
                                             return instance.onShapeShiftOracleResponse(log.args.customer, deposits, amounts);
                                         })
                                         .then(result => {
-                                            console.log("onShapeShiftOracleResponse => ", "transactionHash:", result.tx);
+                                            console.log("end onShapeShiftOracleResponse => ", "transactionHash:", result.tx);
                                             if (result.receipt.status === 1) {
                                                 return DBHelper.updateEventStatus(db, event._id, "success");
                                             }
