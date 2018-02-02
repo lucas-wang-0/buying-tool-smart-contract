@@ -1,0 +1,21 @@
+{
+  "name": "index-smart-contract",
+  "version": "1.0.0",
+  "description": "",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mongodb": "^3.0.1",
+    "prompt-sync": "^4.1.5",
+    "request": "^2.83.0",
+    "truffle-hdwallet-provider": "0.0.3",
+    "zeppelin-solidity": "^1.5.0"
+  }
+}
