@@ -1,6 +1,6 @@
-# Index Smart Contract
+# Buying Tool Smart Contract
 
-# Get Start
+# Get Started
 
 ## install truffle and ganache local testnet
 
@@ -36,7 +36,7 @@ truffle --network=rinkeby deploy
 ```
 then input mnemonics to continue deploy
 
-## listen OnBuy event 
+## listen OnBuy event
 
 first run cmd:
 ```bash
@@ -48,17 +48,17 @@ then run follow cmd to buy, the above OnBuy event will be fire:
 truffle exec scripts/main.js
 ```
 
-# index smart contract
+# buying tool smart contract
 
-## Stage 1 - one-source index
+## Stage 1 - one-source buying tool
 
 ### ShapeShift version
 
 #### Tech functions
 
-- [ ] Oraclized smart contract
-- [ ] send ether to other address
-- [ ] send ERC20 token to other address
+- [x] Oraclized smart contract
+- [x] send ether to other address
+- [x] send ERC20 token to other address
 
 #### Architecture
 
