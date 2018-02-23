@@ -13,7 +13,7 @@ contract KyberAgent is Ownable {
 
     struct Share {
         ERC20 source;
-        uint8 share; // less then 100
+        uint share; // less then 100
     }
     mapping(bytes32 => Share[]) public shares; // sum of share equal 100
     bytes32[] public symbols;
@@ -40,12 +40,12 @@ contract KyberAgent is Ownable {
     }
 
 
-    event OnAddShares(bytes32 _symbol, ERC20[] _sources, uint8[] _shares);
+    event OnAddShares(bytes32 _symbol, ERC20[] _sources, uint[] _shares);
 
     function addShares(
         bytes32 _symbol,
         ERC20[] _sources,
-        uint8[] _shares
+        uint[] _shares
     )
     public
     onlyOwner
@@ -54,7 +54,7 @@ contract KyberAgent is Ownable {
         require(_shares.length < 10);
         require(_sources.length == _shares.length);
 
-        for (uint8 i = 0; i < symbols.length; i++) {
+        for (uint i = 0; i < symbols.length; i++) {
             require(_symbol != symbols[i]);
         }
 
@@ -62,7 +62,7 @@ contract KyberAgent is Ownable {
             require(_sources[i] != address(0));
         }
 
-        uint8 sum = 0;
+        uint sum = 0;
         for (i = 0; i < _shares.length; i++) {
             require(_shares[i] < 100 && _shares[i] > 0);
             sum += _shares[i];
@@ -93,7 +93,7 @@ contract KyberAgent is Ownable {
         uint[] memory srcAmounts = new uint[](ps.length);
         uint[] memory destAmounts = new uint[](ps.length);
 
-        for (uint8 i = 0; i < ps.length - 1; i++) {
+        for (uint i = 0; i < ps.length - 1; i++) {
             var amount = (msg.value * ps[i].share) / 100;
             require(amount > 0);
             srcAmounts[i] = amount;
