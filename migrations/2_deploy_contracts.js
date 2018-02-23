@@ -21,6 +21,6 @@ module.exports = function (deployer, network) {
     case 'kyber': {
       return deployKyber(deployer, network);
     };
-    case 'shapeshfit': return deployer.deploy(BuyToolsAgent);
+    case 'shapeshift': return deployer.deploy(BuyToolsAgent);
   }
 };

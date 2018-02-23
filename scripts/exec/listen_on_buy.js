@@ -1,5 +1,5 @@
 const BuyToolsAgent = artifacts.require("BuyToolsAgent");
-const ShapeShiftClient = require('../libs/shapeshfit')
+const ShapeShiftClient = require('../libs/shapeshift')
 const Index = require('../libs/index')
 const DBHelper = require('../libs/db_helper')
 const MongoClient = require('mongodb').MongoClient;
@@ -39,8 +39,9 @@ module.exports = function (callback) {
                             let blockNumber = log.blockNumber;
                             let transactionHash = log.transactionHash;
                             let logIndex = log.logIndex;
+                            let symbol = web3.toAscii(log.args.symbol).replace(/\u0000/g, '');
 
-                            console.info("new event => ", "transactionHash:", transactionHash, "blockNumber:", blockNumber, "logIndex:", 1, "from:", log.args.customer, "symbol:", web3.toAscii(log.args.symbol), "value:", web3.fromWei(amount.toNumber()));
+                            console.info("new event => ", "transactionHash:", transactionHash, "blockNumber:", blockNumber, "logIndex:", 1, "from:", log.args.customer, "symbol:", symbol, "value:", web3.fromWei(amount.toNumber()));
 
                             DBHelper.saveWatchFromBlock(db, onBuyEventName, blockNumber)
                                 .then(() => {
@@ -52,7 +53,6 @@ module.exports = function (callback) {
                                         return;
                                     }
 
-                                    let symbol = web3.toAscii(log.args.symbol);
                                     let pairs = Index.pairs[symbol];
                                     if (!pairs) {
                                         console.warn("not found symbol:", symbol, "customer:", log.args.customer,"amount:",web3.fromWei(amount.toNumber()));

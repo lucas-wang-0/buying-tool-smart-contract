@@ -7,12 +7,12 @@ contract BuyToolsAgent is Ownable, Oracle {
 
     mapping(address => uint) funds;
 
-    event OnBuy(address indexed customer, bytes symbol, uint256 ethMount);
+    event OnBuy(address indexed customer, bytes32 symbol, uint256 ethMount);
 
     function BuyToolsAgent() public { }
 
     // customer send eth
-    function buy(bytes symbol) 
+    function buy(bytes32 symbol)
     public
     payable
     {
@@ -31,7 +31,7 @@ contract BuyToolsAgent is Ownable, Oracle {
 
     function refund(address sender)
     public
-    onlyOracle
+    onlyOwner
     {
         var fund = funds[sender];
         if (fund > 0) {
@@ -48,7 +48,7 @@ contract BuyToolsAgent is Ownable, Oracle {
         require(deposits.length > 0 && deposits.length < 10);
         require(deposits.length == amounts.length);
 
-        for (uint8 i = 0; i < deposits.length; i++) {
+        for (uint i = 0; i < deposits.length; i++) {
 
             if (amounts[i] == 0) {
                 continue;
